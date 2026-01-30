@@ -1,4 +1,4 @@
-# Royalties Smart Contracts
+#Smart Contracts
 
 Solana program for a royalty marketplace built with Anchor Framework. Enables creators to tokenize revenue streams as NFTs and distribute royalty payouts to holders.
 
