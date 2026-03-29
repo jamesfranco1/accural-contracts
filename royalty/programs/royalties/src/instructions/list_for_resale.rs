@@ -1,12 +1,19 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Token, TokenAccount, Transfer};
-use crate::state::{RoyaltyListing, ResaleListing, ListingStatus};
+use crate::state::{RoyaltyListing, ResaleListing, ListingStatus, PlatformConfig};
 use crate::errors::RoyaltiesError;
 
 #[derive(Accounts)]
 pub struct ListForResale<'info> {
     #[account(mut)]
     pub seller: Signer<'info>,
+
+    #[account(
+        seeds = [b"platform_config"],
+        bump = platform_config.bump,
+        constraint = !platform_config.paused @ RoyaltiesError::PlatformPaused
+    )]
+    pub platform_config: Account<'info, PlatformConfig>,
 
     #[account(
         seeds = [b"royalty_listing", royalty_listing.creator.as_ref(), royalty_listing.nft_mint.as_ref()],
@@ -51,8 +58,8 @@ pub struct ListForResale<'info> {
     pub rent: Sysvar<'info, Rent>,
 }
 
-pub fn handler(ctx: Context<ListForResale>, price: u64) -> Result<()> {
-    require!(price > 0, RoyaltiesError::InvalidPrice);
+pub fn handler(ctx: Context<ListForResale>, price: u64, price_sol: u64) -> Result<()> {
+    require!(price > 0 || price_sol > 0, RoyaltiesError::InvalidPrice);
 
     let clock = Clock::get()?;
 
@@ -75,10 +82,15 @@ pub fn handler(ctx: Context<ListForResale>, price: u64) -> Result<()> {
     resale.royalty_listing = ctx.accounts.royalty_listing.key();
     resale.nft_mint = ctx.accounts.royalty_listing.nft_mint;
     resale.price = price;
+    resale.price_sol = price_sol;
     resale.listed_at = clock.unix_timestamp;
     resale.bump = ctx.bumps.resale_listing;
 
-    msg!("Listed for resale at {} USDC", price as f64 / 1_000_000.0);
+    msg!(
+        "Listed for resale at {} USDC / {} SOL",
+        price as f64 / 1_000_000.0,
+        price_sol as f64 / 1_000_000_000.0
+    );
 
     Ok(())
 }

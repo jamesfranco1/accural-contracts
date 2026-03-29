@@ -97,6 +97,12 @@ pub struct BuyResale<'info> {
 }
 
 pub fn handler(ctx: Context<BuyResale>) -> Result<()> {
+    // Check platform is not paused
+    require!(
+        !ctx.accounts.platform_config.paused,
+        RoyaltiesError::PlatformPaused
+    );
+    
     // Get values early to reduce stack usage
     let total_price = ctx.accounts.resale_listing.price;
     let secondary_fee_bps = ctx.accounts.platform_config.secondary_fee_bps;

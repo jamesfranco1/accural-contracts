@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #05070d;
+  --foreground: #f7f8fb;
+  --surface: rgba(8, 12, 22, 0.72);
+  --surface-strong: rgba(10, 15, 28, 0.92);
+  --surface-soft: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --muted: rgba(229, 233, 245, 0.68);
+  --accent: #dfe5f2;
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 28%);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease,
+      opacity 180ms ease,
+      box-shadow 180ms ease;
+  }
+}
+
+@layer components {
+  .premium-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(20px);
+  }
+
+  .premium-panel-strong {
+    background: var(--surface-strong);
+    border: 1px solid var(--border-strong);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(22px);
+  }
+
+  .premium-section {
+    @apply relative;
+  }
+
+  .premium-kicker {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/70;
+  }
+
+  .premium-muted {
+    color: var(--muted);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Override wallet adapter styles completely */
+.wallet-adapter-button {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06)) !important;
+  color: #f7f8fb !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 999px !important;
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  height: auto !important;
+  padding: 10px 18px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+.wallet-adapter-button:hover {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.wallet-adapter-button:not([disabled]):hover {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.wallet-adapter-button-trigger {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)) !important;
+}
+
+.wallet-adapter-button[data-state="connected"] {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.wallet-adapter-dropdown {
+  border-radius: 24px !important;
+}
+
+.wallet-adapter-dropdown-list {
+  background-color: rgba(7, 10, 18, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  border-radius: 14px !important;
+  color: #f7f8fb !important;
+}
+
+.wallet-adapter-dropdown-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  background-color: rgba(2, 4, 9, 0.72) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.wallet-adapter-modal-container {
+  background-color: rgba(8, 12, 22, 0.98) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 28px !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.wallet-adapter-modal-title {
+  color: #f7f8fb !important;
+  font-weight: 700 !important;
+}
+
+.wallet-adapter-modal-list {
+  margin: 0 !important;
+}
+
+.wallet-adapter-modal-list li {
+  border-radius: 18px !important;
+}
+
+.wallet-adapter-modal-list-more {
+  color: rgba(247, 248, 251, 0.72) !important;
+}
+
+.wallet-adapter-modal-middle-button {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f7f8fb !important;
+  border-radius: 999px !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #05070d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(221, 228, 245, 0.22);
+  color: #ffffff;
+}

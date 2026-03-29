@@ -81,6 +81,12 @@ pub struct BuyListing<'info> {
 }
 
 pub fn handler(ctx: Context<BuyListing>) -> Result<()> {
+    // Check platform is not paused
+    require!(
+        !ctx.accounts.platform_config.paused,
+        RoyaltiesError::PlatformPaused
+    );
+    
     let listing = &ctx.accounts.royalty_listing;
     let config = &ctx.accounts.platform_config;
 

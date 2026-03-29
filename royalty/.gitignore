@@ -40,8 +40,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Rust/Anchor
+# Rust/Anchor (smart contract - already deployed, not needed for frontend)
 /target/
+/programs/
 **/*.rs.bk
 /test-ledger/
 .anchor
+Anchor.toml
+Cargo.toml
+Cargo.lock
+tsconfig.anchor.json
+
+# IDL file in root (we have copy in lib/idl/)
+/idl.json
