@@ -13,6 +13,8 @@ pub struct CreateListingArgs {
     pub duration_seconds: u64,
     /// Price in USDC (6 decimals)
     pub price: u64,
+    /// Price in SOL (lamports, 9 decimals) - 0 means SOL not accepted
+    pub price_sol: u64,
     /// Allow resale on secondary market
     pub resale_allowed: bool,
     /// Creator royalty on resales (basis points)
@@ -55,12 +57,18 @@ pub struct CreateListing<'info> {
 }
 
 pub fn handler(ctx: Context<CreateListing>, args: CreateListingArgs) -> Result<()> {
+    // Check platform is not paused
+    require!(
+        !ctx.accounts.platform_config.paused,
+        RoyaltiesError::PlatformPaused
+    );
+    
     // Validate inputs
     require!(
         args.percentage_bps > 0 && args.percentage_bps <= 10000,
         RoyaltiesError::InvalidPercentage
     );
-    require!(args.price > 0, RoyaltiesError::InvalidPrice);
+    require!(args.price > 0 || args.price_sol > 0, RoyaltiesError::InvalidPrice);
     require!(
         args.metadata_uri.len() > 0 && args.metadata_uri.len() <= 200,
         RoyaltiesError::InvalidMetadataUri
@@ -80,15 +88,17 @@ pub fn handler(ctx: Context<CreateListing>, args: CreateListingArgs) -> Result<(
     listing.duration_seconds = args.duration_seconds;
     listing.start_timestamp = clock.unix_timestamp;
     listing.price = args.price;
+    listing.price_sol = args.price_sol;
     listing.resale_allowed = args.resale_allowed;
     listing.creator_royalty_bps = args.creator_royalty_bps;
     listing.status = ListingStatus::Active;
     listing.bump = ctx.bumps.royalty_listing;
 
     msg!(
-        "Listing created: {}% for {} USDC",
+        "Listing created: {}% for {} USDC / {} SOL",
         args.percentage_bps as f64 / 100.0,
-        args.price as f64 / 1_000_000.0
+        args.price as f64 / 1_000_000.0,
+        args.price_sol as f64 / 1_000_000_000.0
     );
 
     Ok(())

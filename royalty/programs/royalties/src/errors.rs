@@ -40,5 +40,14 @@ pub enum RoyaltiesError {
     
     #[msg("Calculation overflow")]
     Overflow,
+    
+    #[msg("Platform is currently paused")]
+    PlatformPaused,
+    
+    #[msg("SOL payment not accepted for this listing")]
+    SolNotAccepted,
+    
+    #[msg("No fees available to withdraw")]
+    NoFeesToWithdraw,
 }
 

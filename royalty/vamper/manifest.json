@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "USD1 Vamper",
+  "version": "1.0",
+  "description": "Injects USD1 button on Axiom meme pages",
+  "permissions": ["clipboardWrite"],
+  "content_scripts": [
+    {
+      "matches": ["https://axiom.trade/meme/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
+
+

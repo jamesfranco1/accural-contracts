@@ -14,6 +14,8 @@ pub struct PlatformConfig {
     pub secondary_fee_bps: u16,
     /// Total fees collected (for tracking)
     pub total_fees_collected: u64,
+    /// Whether platform is paused
+    pub paused: bool,
     /// Bump seed for PDA
     pub bump: u8,
 }
@@ -25,6 +27,7 @@ impl PlatformConfig {
         2 +  // platform_fee_bps
         2 +  // secondary_fee_bps
         8 +  // total_fees_collected
+        1 +  // paused
         1;   // bump
 }
 
@@ -45,6 +48,8 @@ pub struct RoyaltyListing {
     pub start_timestamp: i64,
     /// Price in USDC (6 decimals)
     pub price: u64,
+    /// Price in SOL (lamports, 9 decimals) - 0 means SOL not accepted
+    pub price_sol: u64,
     /// Whether resale is allowed
     pub resale_allowed: bool,
     /// Creator's royalty on resales (basis points)
@@ -63,7 +68,8 @@ impl RoyaltyListing {
         2 +  // percentage_bps
         8 +  // duration_seconds
         8 +  // start_timestamp
-        8 +  // price
+        8 +  // price (USDC)
+        8 +  // price_sol
         1 +  // resale_allowed
         2 +  // creator_royalty_bps
         1 +  // status
@@ -95,6 +101,8 @@ pub struct ResaleListing {
     pub nft_mint: Pubkey,
     /// Asking price in USDC
     pub price: u64,
+    /// Asking price in SOL (lamports) - 0 means SOL not accepted
+    pub price_sol: u64,
     /// Listing timestamp
     pub listed_at: i64,
     /// Bump seed
@@ -106,7 +114,8 @@ impl ResaleListing {
         32 + // seller
         32 + // royalty_listing
         32 + // nft_mint
-        8 +  // price
+        8 +  // price (USDC)
+        8 +  // price_sol
         8 +  // listed_at
         1;   // bump
 }
